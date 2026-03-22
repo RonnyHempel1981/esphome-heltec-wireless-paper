@@ -85,10 +85,11 @@ void HeltecWirelessPaper::send_buffer_() {
 }
 
 void HeltecWirelessPaper::draw_absolute_pixel_internal(int x, int y, Color color) {
-  if (x < 0 || x >= this->get_width_internal() || y < 0 || y >= this->get_height_internal())
+  if (x < 0 || x >= VISIBLE_WIDTH || y < 0 || y >= NATIVE_HEIGHT)
     return;
 
-  uint32_t pos = x / 8u + y * (this->get_width_internal() / 8u);
+  // Buffer uses NATIVE_WIDTH (128) for row stride, not VISIBLE_WIDTH (122)
+  uint32_t pos = x / 8u + y * (NATIVE_WIDTH / 8u);
 
   if (color.is_on()) {
     this->buffer_[pos] &= ~(0x80 >> (x & 7));
@@ -148,7 +149,7 @@ void HeltecWirelessPaper::reset_() {
 
 void HeltecWirelessPaper::dump_config() {
   LOG_DISPLAY("", "Heltec Wireless Paper (JD79656)", this);
-  ESP_LOGCONFIG(TAG, "  Native: 128x250, Buffer: %u bytes", this->get_buffer_length_());
+  ESP_LOGCONFIG(TAG, "  Visible: %dx%d, RAM: %dx%d, Buffer: %u bytes", VISIBLE_WIDTH, NATIVE_HEIGHT, NATIVE_WIDTH, NATIVE_HEIGHT, this->get_buffer_length_());
   ESP_LOGCONFIG(TAG, "  Full update every: %d", this->full_update_every_);
   LOG_PIN("  DC Pin: ", this->dc_pin_);
   LOG_PIN("  Reset Pin: ", this->reset_pin_);

@@ -8,7 +8,8 @@ namespace esphome {
 namespace heltec_wireless_paper {
 
 /// ESPHome display driver for the Heltec Wireless Paper (JD79656 / UC8151D controller).
-/// Native resolution: 128 x 250 (portrait). Use rotation: 270 for 250x128 landscape.
+/// Visible resolution: 122 x 250 (portrait). Use rotation: 90 or 270 for 250x122 landscape.
+/// The controller addresses 128x250 but only 122 columns are physically visible.
 ///
 /// The Heltec Wireless Paper uses a DEPG0213BNS800 / LCMEN2R13EFC1 e-paper panel
 /// with a JD79656 controller (Fitipower) that speaks the UC8151D command set.
@@ -34,9 +35,13 @@ class HeltecWirelessPaper : public display::DisplayBuffer,
   display::DisplayType get_display_type() override { return display::DisplayType::DISPLAY_TYPE_BINARY; }
 
  protected:
-  int get_width_internal() override { return 128; }
-  int get_height_internal() override { return 250; }
-  uint32_t get_buffer_length_() { return 128u / 8u * 250u; }
+  static const int NATIVE_WIDTH = 128;   // controller RAM width
+  static const int VISIBLE_WIDTH = 122;  // physically visible columns
+  static const int NATIVE_HEIGHT = 250;
+
+  int get_width_internal() override { return VISIBLE_WIDTH; }
+  int get_height_internal() override { return NATIVE_HEIGHT; }
+  uint32_t get_buffer_length_() { return NATIVE_WIDTH / 8u * NATIVE_HEIGHT; }  // 4000 bytes
 
   void draw_absolute_pixel_internal(int x, int y, Color color) override;
   void fill(Color color) override;

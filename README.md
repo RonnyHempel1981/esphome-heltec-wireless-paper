@@ -11,7 +11,7 @@ The Heltec Wireless Paper uses a 2.13" e-paper display with a **JD79656 controll
 | MCU | ESP32-S3 |
 | Display | 2.13" e-paper (DEPG0213BNS800 / LCMEN2R13EFC1) |
 | Controller | JD79656 (UC8151D compatible) |
-| Resolution | 250 x 128 (landscape) / 128 x 250 (portrait) |
+| Resolution | 250 x 122 (landscape) / 122 x 250 (portrait) |
 | Colors | Black / White |
 | Interface | SPI |
 
@@ -133,9 +133,9 @@ display:
 
 ### Rotation
 
-- `0` - Portrait 128x250
-- `90` - Landscape 250x128 (USB port on left)
-- `270` - Landscape 250x128 (USB port on right, recommended)
+- `0` - Portrait 122x250
+- `90` - Landscape 250x122 (USB port on left)
+- `270` - Landscape 250x122 (USB port on right, recommended)
 
 ## Notes
 
